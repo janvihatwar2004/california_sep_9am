@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h1>California House Price</h1>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="/" class="brand">
+            <span class="brand-icon">H</span>
+            <span>HomeValue<span class="brand-light"> AI</span></span>
+        </a>
+        <span class="nav-label">MACHINE LEARNING APP</span>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <div class="eyebrow">
+                <span class="status-dot"></span>
+                AI-POWERED PREDICTION
+            </div>
+
+            <h1>California Housing<br>
+                <span>Price Predictor</span>
+            </h1>
+
+            <p class="hero-text">
+                Enter the property and location details below
+                to get a prediction from our trained machine
+                learning model.
+            </p>
+        </section>
+
+        <section class="prediction-card">
+            <div class="card-heading">
+                <div>
+                    <h2>Property details</h2>
+                    <p>Fill in all the required fields.</p>
+                </div>
+                <div class="form-icon">⌂</div>
+            </div>
+
+            <form method="POST" action="/" class="prediction-form">
+
+                <div class="form-grid">
+                    {% for column in columns %}
+                    <div class="form-group">
+                        <label for="{{ column }}">
+                            {{ column.replace('_', ' ') }}
+                        </label>
+
+                        <input
+                            type="number"
+                            id="{{ column }}"
+                            name="{{ column }}"
+                            step="any"
+                            placeholder="Enter {{ column.replace('_', ' ') }}"
+                            value="{{ values.get(column, '') }}"
+                            required
+                        >
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if error %}
+                <div class="message error-message" role="alert">
+                    <strong>Oops!</strong> {{ error }}
+                </div>
+                {% endif %}
+
+                <button type="submit" class="predict-button">
+                    Predict Housing Value
+                    <span aria-hidden="true">→</span>
+                </button>
+
+                <p class="form-note">
+                    Your entered values are used to generate a model prediction.
+                </p>
+            </form>
+        </section>
+
+        {% if prediction is not none %}
+        <section class="result-card" aria-live="polite">
+            <div class="result-icon">✓</div>
+            <div class="result-content">
+                <p class="result-label">YOUR PREDICTION</p>
+                <h2>{{ "%.4f"|format(prediction) }}</h2>
+                <p class="result-description">
+                    Predicted output from your trained model.
+                </p>
+            </div>
+        </section>
+        {% endif %}
+
+        <footer>
+            <p>Built with Flask, Python &amp; Machine Learning</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
